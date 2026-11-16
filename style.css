@@ -209,15 +209,13 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth), visibility 0.6s;
-  transform: scale(0.96);
+  transition: opacity 0.5s var(--ease-smooth), visibility 0.5s;
 }
 
 .screen.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: scale(1);
 }
 
 /* ==========================================================================
@@ -454,6 +452,7 @@ body {
   transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
+/* Mặt sau phong bì (.envelope-back): z-index: 1 */
 .envelope-back {
   position: absolute;
   width: 100%;
@@ -466,12 +465,18 @@ body {
   box-shadow: inset 0 10px 24px rgba(0, 0, 0, 0.15), inset 0 -6px 12px rgba(0, 0, 0, 0.06);
 }
 
-.envelope-paper-peek {
+/* Lá thư (.letter) lúc đang nằm trong phong bì và đang rút lên: z-index: 2 */
+/* Trạng thái đóng: Nằm gọn bên trong phong bì (transform: translate(-50%, 0) scale(0.95)) */
+/* Tâm biến đổi ở chính giữa: left: 50%, transform-origin: center center */
+.envelope-paper-peek,
+.envelope .letter {
   position: absolute;
   top: 15px;
-  left: 15px;
-  right: 15px;
+  left: 50%;
+  width: 280px;
   height: 160px;
+  transform: translate(-50%, 0) scale(0.95);
+  transform-origin: center center;
   background: var(--paper-bg);
   border-radius: 10px 10px 0 0;
   z-index: 2;
@@ -481,12 +486,13 @@ body {
   justify-content: center;
   padding: 14px 10px 0;
   text-align: center;
-  transform-origin: bottom center;
   will-change: transform, box-shadow;
   overflow: hidden;
+  transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.75s ease;
 }
 
-.envelope-paper-peek::before {
+.envelope-paper-peek::before,
+.envelope .letter::before {
   content: '';
   position: absolute;
   top: 0;
@@ -513,7 +519,10 @@ body {
   color: var(--primary-rose);
 }
 
-.envelope-front {
+/* Mặt trước/túi phong bì (.envelope-front / .pocket): z-index: 3 */
+/* Che phần nửa dưới của lá thư khi mới bắt đầu rút lên, tạo cảm giác thư thực sự nằm bên trong túi */
+.envelope-front,
+.envelope .pocket {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -522,12 +531,13 @@ body {
   border-style: solid;
   border-width: 0 155px 120px 155px;
   border-color: transparent transparent #e4ceba transparent;
-  z-index: 4;
+  z-index: 3;
   border-radius: 0 0 12px 12px;
   filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.08));
 }
 
-.envelope-front::before {
+.envelope-front::before,
+.envelope .pocket::before {
   content: '';
   position: absolute;
   bottom: -120px;
@@ -541,7 +551,8 @@ body {
   filter: drop-shadow(2px 0 3px rgba(0, 0, 0, 0.04));
 }
 
-.envelope-front::after {
+.envelope-front::after,
+.envelope .pocket::after {
   content: '';
   position: absolute;
   bottom: -120px;
@@ -555,6 +566,7 @@ body {
   filter: drop-shadow(-2px 0 3px rgba(0, 0, 0, 0.04));
 }
 
+/* Nắp phong bì (.envelope-flap): z-index: 4 khi đóng -> chuyển thành z-index: 1 khi lật mở quá 90 độ */
 .envelope-flap {
   position: absolute;
   top: 0;
@@ -565,14 +577,14 @@ body {
   border-width: 125px 155px 0 155px;
   border-color: #eeddcb transparent transparent transparent;
   transform-origin: top center;
-  z-index: 5;
+  z-index: 4;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
   transform: rotateX(0deg);
   backface-visibility: visible;
   will-change: transform, z-index;
 }
 
-/* Con dấu sáp (Wax Seal) */
+/* Con dấu sáp (Wax Seal): z-index: 5 (nằm trên nắp phong bì z-index: 4) */
 .wax-seal {
   position: absolute;
   top: 80px;
@@ -582,7 +594,7 @@ body {
   height: 68px;
   background: radial-gradient(circle at 35% 35%, #b91c1c, #881337 70%, #4c0519 100%);
   border-radius: 50%;
-  z-index: 10;
+  z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -710,7 +722,7 @@ body {
   50% { opacity: 1; transform: scale(1.02); }
 }
 
-/* Giai đoạn 2 (0.3s - 0.9s): Nắp phong bì mở 3D với dynamic z-index qua 90 độ */
+/* Giai đoạn 2 (0.3s - 0.9s): Nắp phong bì mở 3D với dynamic z-index (4 -> 1) qua 90 độ */
 .envelope.open-flap .envelope-flap {
   animation: openFlap3D 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -718,12 +730,12 @@ body {
 @keyframes openFlap3D {
   0% {
     transform: rotateX(0deg);
-    z-index: 5;
+    z-index: 4;
     filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
   }
   49.9% {
     transform: rotateX(90deg);
-    z-index: 5;
+    z-index: 4;
     filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));
   }
   50% {
@@ -738,30 +750,30 @@ body {
   }
 }
 
-/* Giai đoạn 3 (0.7s - 1.5s): Lá thư từ từ trượt lên kèm độ nghiêng nhẹ ban đầu */
-.envelope.slide-paper .envelope-paper-peek {
-  animation: paperSlideUpWithTilt 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  z-index: 6;
+/* Bước 1 (Rút thẳng lên khỏi miệng phong bì):
+   Lá thư trượt thẳng đứng lên trên theo trục Y (transform: translate(-50%, -65%) scale(0.98))
+   Tâm biến đổi ở chính giữa: left: 50%, transform-origin: center center.
+   Loại bỏ hoàn toàn các thuộc tính rotate, skew, hoặc translateX lệch tâm. */
+.envelope.slide-paper .envelope-paper-peek,
+.envelope.slide-paper .letter {
+  animation: letterPullStraightUp 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 2;
 }
 
-@keyframes paperSlideUpWithTilt {
+@keyframes letterPullStraightUp {
   0% {
-    transform: translateY(0) rotate(0deg) scale(1);
+    transform: translate(-50%, 0) scale(0.95);
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.08);
   }
-  40% {
-    transform: translateY(-90px) rotate(-2deg) scale(1.02);
-    box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.15);
-  }
   100% {
-    transform: translateY(-165px) rotate(-1.6deg) scale(1.04);
-    box-shadow: 0 -22px 42px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -65%) scale(0.98);
+    box-shadow: 0 -18px 36px rgba(0, 0, 0, 0.16);
   }
 }
 
-/* Phong bì mờ dần và trượt nhẹ xuống dưới */
+/* Bước 2: Phong bì trượt nhẹ xuống và mờ dần */
 #envelope-screen.exiting .envelope {
-  transform: translateY(45px) scale(0.92);
+  transform: translateY(40px);
   opacity: 0;
   filter: blur(2px);
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, filter 0.5s ease;
@@ -777,42 +789,54 @@ body {
    MÀN HÌNH 3: BỨC THƯ TÌNH ĐIỆN TỬ (LETTER VIEWPORT)
    ========================================================================== */
 #letter-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  padding-top: 54px; /* Chừa khoảng trống cho thanh Top Nav Bar */
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .letter-scroll-wrapper {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Bước 2 (Phóng to & Căn giữa màn hình):
+   Sau khi đã rút ra khỏi miệng phong bì, chiếc phong bì từ từ trượt xuống và mờ dần (opacity: 0),
+   đồng thời lá thư hạ nhẹ về đúng chính giữa màn hình (position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1))
+   với chiều rộng chuẩn khung điện thoại (width: 90vw; max-width: 420px; max-height: 85vh; overflow-y: auto).
+   z-index: 10 sau khi rút xong và bung toàn màn hình. */
+.vintage-letter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center center;
+  width: 90vw;
+  max-width: 420px;
+  max-height: 85vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px 14px 100px;
-  padding-bottom: calc(95px + env(safe-area-inset-bottom, 24px));
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   overscroll-behavior-y: contain;
-}
-
-.letter-scroll-wrapper::-webkit-scrollbar {
-  width: 5px;
-}
-.letter-scroll-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(212, 165, 116, 0.4);
-  border-radius: 10px;
-}
-
-/* TẤM THIỆP GIẤY MỸ THUẬT CỔ ĐIỂN - CHẤT LIỆU GIẤY & ĐỔ BÓNG CHÂN THỰC */
-.vintage-letter {
-  position: relative;
-  width: 100%;
+  z-index: 10;
+  border-radius: 16px;
+  padding: 30px 22px 40px;
   background-color: var(--paper-bg);
   background-image: 
     radial-gradient(#e5d7c3 0.65px, transparent 0.65px), 
     linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(246, 239, 226, 0.6));
   background-size: 14px 14px, 100% 100%;
-  border-radius: 16px;
-  padding: 30px 22px 28px;
   box-shadow: 
     0 4px 8px rgba(90, 60, 40, 0.04),
     0 14px 28px -6px rgba(90, 60, 40, 0.16),
@@ -821,7 +845,27 @@ body {
   border: 1px solid var(--paper-border);
   outline: 4px double rgba(212, 165, 116, 0.35);
   outline-offset: -10px;
-  animation: letterAppear 0.85s cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation: letterCenterExpand 0.7s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+/* Quỹ đạo chuyển động Bước 2: Nối tiếp chính xác từ Bước 1 (-65%) hạ nhẹ về (-50%) chính giữa màn hình */
+@keyframes letterCenterExpand {
+  0% {
+    opacity: 0.6;
+    transform: translate(-50%, -65%) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.vintage-letter::-webkit-scrollbar {
+  width: 5px;
+}
+.vintage-letter::-webkit-scrollbar-thumb {
+  background: rgba(212, 165, 116, 0.4);
+  border-radius: 10px;
 }
 
 /* Nếp gấp giấy ngang mờ nhẹ (Paper crease / trifold fold gradient) */
@@ -859,21 +903,6 @@ body {
 .interactive-footer {
   position: relative;
   z-index: 2;
-}
-
-@keyframes letterAppear {
-  0% {
-    opacity: 0;
-    transform: translateY(70px) rotate(-1.6deg) scale(0.9);
-  }
-  65% {
-    opacity: 1;
-    transform: translateY(-6px) rotate(0.4deg) scale(1.008);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotate(0deg) scale(1);
-  }
 }
 
 .letter-corner {

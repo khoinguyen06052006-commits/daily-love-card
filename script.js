@@ -826,7 +826,7 @@ function verifyPin() {
 }
 
 /* ==============================================================================
-   8. HIỆU ỨNG MỞ PHONG BÌ & CON DẤU SÁP (MULTI-STAGE CHOREOGRAPHY)
+   8. HIỆU ỨNG MỞ PHONG BÌ & CON DẤU SÁP (CHUẨN HÓA QUỸ ĐẠO THẲNG ĐỨNG)
    ============================================================================== */
 function openEnvelope() {
   if (state.isEnvelopeOpen) return;
@@ -847,29 +847,29 @@ function openEnvelope() {
     DOM.envelope.classList.add("open-flap");
   }, 300);
 
-  // Giai đoạn 3 (0.7s - 1.5s): Lá thư từ từ trượt lên với độ nghiêng nhẹ ban đầu như tay rút thư
+  // Bước 1 (0.7s - 1.2s): Lá thư trượt thẳng đứng lên trên theo trục Y (transform: translate(-50%, -65%) scale(0.98))
   setTimeout(() => {
     DOM.envelope.classList.add("slide-paper");
   }, 700);
 
-  // Giai đoạn 3.2 (1.15s - 1.5s): Phong bì trượt nhẹ xuống và mờ dần, lá thư mở rộng giữa màn hình
+  // Bước 2 (1.2s - 1.8s): Phong bì trượt nhẹ xuống và mờ dần, lá thư hạ nhẹ về đúng chính giữa màn hình
   setTimeout(() => {
     DOM.envelopeScreen.classList.add("exiting");
     transitionScreen(DOM.envelopeScreen, DOM.letterScreen, () => {
       // Sau khi lá thư mở hoàn tất trên màn hình, kích hoạt hiệu ứng gõ chữ
       setTimeout(() => {
         startTypewriter();
-      }, 350);
+      }, 400);
     });
-  }, 1150);
+  }, 1200);
 }
 
 function transitionScreen(fromScreen, toScreen, callback) {
+  toScreen.classList.add("active");
   fromScreen.classList.remove("active");
   setTimeout(() => {
-    toScreen.classList.add("active");
     if (callback) callback();
-  }, 350);
+  }, 400);
 }
 
 /* ==============================================================================
