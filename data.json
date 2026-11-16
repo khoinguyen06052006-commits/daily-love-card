@@ -1,0 +1,120 @@
+{
+  "config": {
+    "passcode": "0508",
+    "anniversaryDate": "2026-07-26",
+    "recipientName": "Em Bé Của Anh",
+    "senderName": "Người thương của em ❤️",
+    "musicUrl": "https://res.cloudinary.com/yowk0aay/video/upload/v1794639745/%C4%91%E1%BB%83_d%C3%A0nh_cho_em.mp3"
+  },
+  "letters": [
+    {
+      "date": "2026-11-14",
+      "letterNumber": "Bức thư tình #01",
+      "title": "Nắng Ấm Dịu Dàng Giữa Mùa Đông",
+      "imageUrl": "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
+      "caption": "Nụ cười của em là ánh mặt trời ấm áp nhất ☀️",
+      "message": [
+        "Gửi em, mảnh ghép dịu dàng nhất của cuộc đời anh,",
+        "Hôm nay trời có chút se se lạnh, em nhớ mặc áo ấm khi ra ngoài nhé. Sáng nay thức dậy, điều đầu tiên anh nghĩ đến chính là nụ cười của em.",
+        "Gửi cho em những lời văn có vẻ hơi ngây ngô nhưng chứa đầy trân thành từ nơi anh. Tình yêu nơi em là sự ngọt ngào và ấm áp nhất mà anh được nhận.",
+        "Đôi khi anh có vụng về khi đón nhận tình cảm ấy mong em hãy nhẹ nhàng nói cho anh hiểu điều em đang muốn nhé."
+      ],
+      "question": {
+        "prompt": "Hôm nay em muốn cùng anh làm điều gì nhất nè?",
+        "options": [
+          "Xem phim",
+          "Chơi game nè",
+          "Nghe anh kể chuyện",
+          "Chỉ cần bên nhau là được 🥰"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-15",
+      "letterNumber": "Bức thư tình #02",
+      "title": "Khoảnh Khắc Kỷ Niệm Cuối Tuần",
+      "imageUrl": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80",
+      "caption": "Những giây phút bình yên khi có em cạnh bên 💕",
+      "message": [
+        "Chào em yêu của anh,",
+        "Cuối tuần trôi qua thật nhanh khi được ở cạnh em. Từng tiếng cười, từng ánh mắt của em đều khiến lòng anh thấy nhẹ nhõm và ấm áp vô cùng.",
+        "Cảm ơn em vì đã luôn kiên nhẫn và đồng hành cùng anh qua những ngày bình dị. Chúc em một buổi tối thật ngon giấc và chuẩn bị tinh thần cho tuần mới thật rạng rỡ nhé!"
+      ],
+      "question": {
+        "prompt": "Cuối tuần vừa rồi em thấy vui nhất lúc nào?",
+        "options": [
+          "Lúc được anh đón đi chơi 🛵",
+          "Lúc cùng nhau ăn món ngon 🍲",
+          "Lúc ngồi trò chuyện tâm sự ✨",
+          "Tất cả mọi lúc bên anh 🥰"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-16",
+      "letterNumber": "Bức thư tình #03",
+      "title": "Hôm Nay: Đầu Tuần Rạng Rỡ & Bình Yên Cho Em",
+      "imageUrl": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
+      "caption": "Mong ngày đầu tuần của em thật dịu êm và nhiều tiếng cười 🌿",
+      "message": [
+        "Chào cô gái nhỏ của anh,",
+        "Một tuần mới lại bắt đầu rồi nè. Không biết sáng nay em thức dậy có thấy sảng khoái và tràn đầy năng lượng không?",
+        "Anh biết đầu tuần thường có nhiều công việc và đôi khi làm em thấy áp lực một chút. Nhưng em đừng lo nhé, dù bận rộn đến đâu thì vẫn luôn có một người ở đây cổ vũ và nghĩ về em từng giây từng phút.",
+        "Hôm nay nhớ ăn uống đầy đủ, uống nhiều nước ấm và giữ cho tinh thần thật thoải mái nhé. Nếu có lúc nào mệt mỏi, hãy nhớ anh luôn sẵn sàng ôm em thật chặt!",
+        "Chúc em một ngày làm việc thật suôn sẻ, yêu em nhiều lắm!"
+      ],
+      "question": {
+        "prompt": "Sáng nay thức dậy điều đầu tiên em nghĩ đến là gì nè?",
+        "options": [
+          "Nghĩ đến anh đầu tiên á 💕",
+          "Muốn ngủ nướng thêm 5 phút 😴",
+          "Hôm nay mặc gì cho xinh ✨",
+          "Thèm một cốc cà phê / trà sữa ☕"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-17",
+      "letterNumber": "Bức thư tình #04",
+      "title": "Ngày Mai: Điều Ngọt Ngào Dành Riêng Cho Em",
+      "imageUrl": "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80",
+      "caption": "Mỗi ngày trôi qua, anh lại thấy thương em nhiều hơn một chút 🌸",
+      "message": [
+        "Bức thư này anh viết để dành riêng cho ngày mai của chúng mình...",
+        "Em biết không, mỗi khi nghĩ về chặng đường đã qua cùng em, anh luôn thầm cảm ơn vì cuộc đời đã mang em đến bên anh một cách thật tình cờ nhưng lại vô cùng trọn vẹn.",
+        "Ngày mai có thể vẫn là một ngày bình thường trôi qua giữa dòng đời hối hả, nhưng trong tim anh, ngày nào có em cũng đều là một ngày đặc biệt.",
+        "Hẹn gặp lại em vào ngày mai với một nụ cười thật tươi nhé. Ngủ một giấc thật ngon và mơ về những điều hạnh phúc của hai đứa mình nha em!"
+      ],
+      "question": {
+        "prompt": "Nếu ngày mai được ước một điều ước, em sẽ ước gì?",
+        "options": [
+          "Ước được anh dẫn đi ăn món ngon 🍲",
+          "Ước chúng mình mãi bình yên bên nhau 💖",
+          "Ước mọi mệt mỏi đều tan biến ✨",
+          "Chỉ cần anh luôn yêu em là đủ 🥰"
+        ]
+      }
+    }
+  ],
+  "fallbackLetter": {
+    "letterNumber": "Bức thư tình đặc biệt",
+    "title": "Bức Thư Tình Gửi Người Anh Thương",
+    "imageUrl": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
+    "caption": "Mỗi ngày trôi qua đều là một ngày yêu em 💖",
+    "message": [
+      "Gửi em bé đáng yêu của anh,",
+      "Hôm nay anh chưa kịp cập nhật bức thư mới vào trang nhật ký, nhưng tình cảm anh dành cho em thì chưa bao giờ vơi bớt cả.",
+      "Cảm ơn em đã luôn là nguồn năng lượng tích cực và dịu dàng nhất của anh. Hãy nhớ uống nhiều nước, ăn uống đúng giờ và giữ nụ cười thật tươi trên môi nhé!",
+      "Anh yêu em nhiều hơn ngày hôm qua và ít hơn ngày mai một chút!"
+    ],
+    "question": {
+      "prompt": "Hôm nay em có nhớ anh nhiều không?",
+      "options": [
+        "Rất rất nhiều! 💕",
+        "Nhiều hơn cả hôm qua 🥰",
+        "Nhớ cả ngày lẫn đêm 🌙",
+        "Không thể đếm xuể ✨"
+      ]
+    }
+  }
+}
