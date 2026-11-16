@@ -86,11 +86,11 @@ const EMBEDDED_DATA = {
       imageUrl: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
       caption: "Mong ngày đầu tuần của em thật dịu êm và nhiều tiếng cười 🌿",
       message: [
-        "Chào cô gái nhỏ của anh,",
+        "Chào em bé nhỏ của anh,",
         "Một tuần mới lại bắt đầu rồi nè. Không biết sáng nay em thức dậy có thấy sảng khoái và tràn đầy năng lượng không?",
         "Anh biết đầu tuần thường có nhiều công việc và đôi khi làm em thấy áp lực một chút. Nhưng em đừng lo nhé, dù bận rộn đến đâu thì vẫn luôn có một người ở đây cổ vũ và nghĩ về em từng giây từng phút.",
-        "Hôm nay nhớ ăn uống đầy đủ, uống nhiều nước ấm và giữ cho tinh thần thật thoải mái nhé. Nếu có lúc nào mệt mỏi, hãy nhớ anh luôn sẵn sàng ôm em thật chặt!",
-        "Chúc em một ngày làm việc thật suôn sẻ, yêu em nhiều lắm!"
+        "Hôm nay nhớ ăn uống đầy đủ, uống nhiều nước ấm và giữ cho mình thật nhiều niềm vui nhéee. Nếu có lúc nào mệt mỏi, hãy nhớ anh luôn sẵn sàng ôm em thật chặt!",
+        "Chúc em một ngày thật suôn sẻ, anh yêu em nhiều lắm!"
       ],
       question: {
         prompt: "Sáng nay thức dậy điều đầu tiên em nghĩ đến là gì nè?",
