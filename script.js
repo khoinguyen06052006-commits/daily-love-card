@@ -826,23 +826,42 @@ function verifyPin() {
 }
 
 /* ==============================================================================
-   8. HIỆU ỨNG MỞ PHONG BÌ & CON DẤU SÁP
+   8. HIỆU ỨNG MỞ PHONG BÌ & CON DẤU SÁP (MULTI-STAGE CHOREOGRAPHY)
    ============================================================================== */
 function openEnvelope() {
   if (state.isEnvelopeOpen) return;
   state.isEnvelopeOpen = true;
 
+  // Giai đoạn 1 (0s - 0.5s): Con dấu sáp nứt nhẹ hoặc mờ dần tự nhiên + âm thanh & phản hồi xúc giác
   playWaxSealCrackSound();
-
+  if ("vibrate" in navigator) {
+    navigator.vibrate([25, 30, 35]);
+  }
+  DOM.waxSeal.classList.add("cracking");
   DOM.envelope.classList.add("opening");
   DOM.tapSealHint.style.opacity = "0";
   spawnMiniHeartsAround(DOM.waxSeal);
 
+  // Giai đoạn 2 (0.3s - 0.9s): Nắp phong bì lật mở 3D (rotateX 180deg), qua 90 độ z-index đổi xuống dưới lá thư
   setTimeout(() => {
+    DOM.envelope.classList.add("open-flap");
+  }, 300);
+
+  // Giai đoạn 3 (0.7s - 1.5s): Lá thư từ từ trượt lên với độ nghiêng nhẹ ban đầu như tay rút thư
+  setTimeout(() => {
+    DOM.envelope.classList.add("slide-paper");
+  }, 700);
+
+  // Giai đoạn 3.2 (1.15s - 1.5s): Phong bì trượt nhẹ xuống và mờ dần, lá thư mở rộng giữa màn hình
+  setTimeout(() => {
+    DOM.envelopeScreen.classList.add("exiting");
     transitionScreen(DOM.envelopeScreen, DOM.letterScreen, () => {
-      startTypewriter();
+      // Sau khi lá thư mở hoàn tất trên màn hình, kích hoạt hiệu ứng gõ chữ
+      setTimeout(() => {
+        startTypewriter();
+      }, 350);
     });
-  }, 1100);
+  }, 1150);
 }
 
 function transitionScreen(fromScreen, toScreen, callback) {
@@ -1243,17 +1262,33 @@ function playWaxSealCrackSound() {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(320, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.2);
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.2);
+    const now = ctx.currentTime;
+
+    // Lớp 1: Tiếng nứt giòn sắc của con dấu sáp (crisp wax snap)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sawtooth";
+    osc1.frequency.setValueAtTime(820, now);
+    osc1.frequency.exponentialRampToValueAtTime(140, now + 0.08);
+    gain1.gain.setValueAtTime(0.2, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.08);
+
+    // Lớp 2: Tiếng tách mép sáp và trượt giấy đằm ấm
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "triangle";
+    osc2.frequency.setValueAtTime(320, now + 0.03);
+    osc2.frequency.exponentialRampToValueAtTime(75, now + 0.22);
+    gain2.gain.setValueAtTime(0.18, now + 0.03);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.03);
+    osc2.stop(now + 0.22);
   } catch (e) {}
 }
 
@@ -1455,8 +1490,15 @@ function setupEventListeners() {
     state.currentPin = "";
     updatePinDisplay();
     DOM.pinMessage.textContent = "";
-    DOM.envelope.classList.remove("opening");
+
+    // Reset toàn bộ trạng thái chuyển động của phong bì & con dấu sáp
+    DOM.envelope.classList.remove("opening", "open-flap", "slide-paper");
+    DOM.envelopeScreen.classList.remove("exiting");
+    DOM.waxSeal.classList.remove("cracking");
+    DOM.waxSeal.style.opacity = "";
+    DOM.waxSeal.style.transform = "";
     DOM.tapSealHint.style.opacity = "1";
+
     DOM.skipTypingBtn.style.display = "inline-block";
     transitionScreen(DOM.letterScreen, DOM.lockScreen);
   });

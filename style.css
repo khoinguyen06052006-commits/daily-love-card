@@ -444,22 +444,26 @@ body {
   position: relative;
   width: 310px;
   height: 200px;
-  background: #ecdcc9;
+  background: #ebd8c3;
   border-radius: 12px;
-  box-shadow: var(--shadow-envelope);
+  box-shadow: 
+    0 20px 45px -10px rgba(180, 83, 9, 0.22),
+    0 8px 20px -5px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
   transform-style: preserve-3d;
-  transition: transform 0.6s ease;
+  transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
 .envelope-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #dfcbba;
+  background: #d8c3b0;
   border-radius: 12px;
   top: 0;
   left: 0;
   z-index: 1;
+  box-shadow: inset 0 10px 24px rgba(0, 0, 0, 0.15), inset 0 -6px 12px rgba(0, 0, 0, 0.06);
 }
 
 .envelope-paper-peek {
@@ -469,18 +473,41 @@ body {
   right: 15px;
   height: 160px;
   background: var(--paper-bg);
-  border-radius: 8px 8px 0 0;
+  border-radius: 10px 10px 0 0;
   z-index: 2;
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
   border: 1px solid var(--paper-border);
   display: flex;
   justify-content: center;
   padding: 14px 10px 0;
-  transition: transform 0.8s var(--ease-spring);
   text-align: center;
+  transform-origin: bottom center;
+  will-change: transform, box-shadow;
+  overflow: hidden;
+}
+
+.envelope-paper-peek::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 48%,
+    rgba(90, 60, 40, 0.035) 49%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 52%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .peek-text {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-handwriting);
   font-size: 1.25rem;
   color: var(--primary-rose);
@@ -497,7 +524,7 @@ body {
   border-color: transparent transparent #e4ceba transparent;
   z-index: 4;
   border-radius: 0 0 12px 12px;
-  filter: drop-shadow(0 -3px 6px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.08));
 }
 
 .envelope-front::before {
@@ -511,6 +538,7 @@ body {
   border-width: 100px 0 100px 155px;
   border-color: transparent transparent transparent #dac2ad;
   z-index: 3;
+  filter: drop-shadow(2px 0 3px rgba(0, 0, 0, 0.04));
 }
 
 .envelope-front::after {
@@ -524,6 +552,7 @@ body {
   border-width: 100px 155px 100px 0;
   border-color: transparent #dec7b4 transparent transparent;
   z-index: 3;
+  filter: drop-shadow(-2px 0 3px rgba(0, 0, 0, 0.04));
 }
 
 .envelope-flap {
@@ -536,9 +565,11 @@ body {
   border-width: 125px 155px 0 155px;
   border-color: #eeddcb transparent transparent transparent;
   transform-origin: top center;
-  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 5;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+  transform: rotateX(0deg);
+  backface-visibility: visible;
+  will-change: transform, z-index;
 }
 
 /* Con dấu sáp (Wax Seal) */
@@ -559,7 +590,8 @@ body {
   border: none;
   outline: none;
   box-shadow: 0 8px 18px rgba(127, 29, 29, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.4), inset 0 -3px 6px rgba(0, 0, 0, 0.6);
-  transition: all 0.3s var(--ease-spring);
+  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease;
+  will-change: transform, opacity;
 }
 
 .seal-ring {
@@ -612,8 +644,56 @@ body {
 }
 
 .wax-seal:hover {
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: translate(-50%, -50%) scale(1.08);
   box-shadow: 0 12px 26px rgba(153, 27, 27, 0.65);
+}
+
+/* Giai đoạn 1 (0s - 0.5s): Con dấu sáp nứt nhẹ và mờ dần */
+.wax-seal.cracking {
+  animation: waxCrack 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+  pointer-events: none;
+}
+
+.wax-seal.cracking::after {
+  display: none;
+}
+
+.wax-seal.cracking::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), rgba(76, 5, 25, 0.9), transparent);
+  transform: translate(-50%, -50%) rotate(42deg);
+  z-index: 12;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes waxCrack {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    filter: drop-shadow(0 8px 18px rgba(127, 29, 29, 0.5));
+  }
+  20% {
+    transform: translate(-50%, -50%) scale(1.09) rotate(-3deg);
+    filter: drop-shadow(0 14px 24px rgba(153, 27, 27, 0.65)) brightness(1.2);
+  }
+  45% {
+    transform: translate(-50%, -50%) scale(1.04) rotate(3deg);
+    filter: drop-shadow(0 8px 16px rgba(127, 29, 29, 0.4)) brightness(1.1);
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(0.9) rotate(-1deg);
+    opacity: 0.6;
+    filter: blur(1px);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+    opacity: 0;
+    filter: blur(3px);
+  }
 }
 
 .tap-seal-hint {
@@ -621,6 +701,7 @@ body {
   color: var(--text-muted);
   margin-top: 36px;
   text-align: center;
+  transition: opacity 0.35s ease;
   animation: pulseOpacity 2s infinite ease-in-out;
 }
 
@@ -629,21 +710,67 @@ body {
   50% { opacity: 1; transform: scale(1.02); }
 }
 
-.envelope.opening .envelope-flap {
-  transform: rotateX(180deg);
-  z-index: 1;
+/* Giai đoạn 2 (0.3s - 0.9s): Nắp phong bì mở 3D với dynamic z-index qua 90 độ */
+.envelope.open-flap .envelope-flap {
+  animation: openFlap3D 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.envelope.opening .wax-seal {
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: all 0.4s ease-out;
+@keyframes openFlap3D {
+  0% {
+    transform: rotateX(0deg);
+    z-index: 5;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+  }
+  49.9% {
+    transform: rotateX(90deg);
+    z-index: 5;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));
+  }
+  50% {
+    transform: rotateX(90.1deg);
+    z-index: 1;
+    filter: drop-shadow(0 -1px 3px rgba(0, 0, 0, 0.06));
+  }
+  100% {
+    transform: rotateX(180deg);
+    z-index: 1;
+    filter: drop-shadow(0 -6px 14px rgba(0, 0, 0, 0.1));
+  }
 }
 
-.envelope.opening .envelope-paper-peek {
-  transform: translateY(-90px);
+/* Giai đoạn 3 (0.7s - 1.5s): Lá thư từ từ trượt lên kèm độ nghiêng nhẹ ban đầu */
+.envelope.slide-paper .envelope-paper-peek {
+  animation: paperSlideUpWithTilt 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   z-index: 6;
-  box-shadow: 0 -15px 30px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes paperSlideUpWithTilt {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.08);
+  }
+  40% {
+    transform: translateY(-90px) rotate(-2deg) scale(1.02);
+    box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.15);
+  }
+  100% {
+    transform: translateY(-165px) rotate(-1.6deg) scale(1.04);
+    box-shadow: 0 -22px 42px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Phong bì mờ dần và trượt nhẹ xuống dưới */
+#envelope-screen.exiting .envelope {
+  transform: translateY(45px) scale(0.92);
+  opacity: 0;
+  filter: blur(2px);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, filter 0.5s ease;
+}
+
+#envelope-screen.exiting .envelope-intro {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 /* ==========================================================================
@@ -652,6 +779,7 @@ body {
 #letter-screen {
   height: 100%;
   padding-top: 54px; /* Chừa khoảng trống cho thanh Top Nav Bar */
+  overflow: hidden;
 }
 
 .letter-scroll-wrapper {
@@ -659,9 +787,11 @@ body {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px 14px 44px;
+  padding: 10px 14px 100px;
+  padding-bottom: calc(95px + env(safe-area-inset-bottom, 24px));
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
 }
 
 .letter-scroll-wrapper::-webkit-scrollbar {
@@ -672,7 +802,7 @@ body {
   border-radius: 10px;
 }
 
-/* TẤM THIỆP GIẤY MỸ THUẬT CỔ ĐIỂN */
+/* TẤM THIỆP GIẤY MỸ THUẬT CỔ ĐIỂN - CHẤT LIỆU GIẤY & ĐỔ BÓNG CHÂN THỰC */
 .vintage-letter {
   position: relative;
   width: 100%;
@@ -681,18 +811,69 @@ body {
     radial-gradient(#e5d7c3 0.65px, transparent 0.65px), 
     linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(246, 239, 226, 0.6));
   background-size: 14px 14px, 100% 100%;
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 30px 22px 28px;
-  box-shadow: var(--shadow-paper);
+  box-shadow: 
+    0 4px 8px rgba(90, 60, 40, 0.04),
+    0 14px 28px -6px rgba(90, 60, 40, 0.16),
+    0 28px 56px -12px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.7) inset;
   border: 1px solid var(--paper-border);
   outline: 4px double rgba(212, 165, 116, 0.35);
   outline-offset: -10px;
-  animation: letterAppear 0.9s var(--ease-spring);
+  animation: letterAppear 0.85s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+/* Nếp gấp giấy ngang mờ nhẹ (Paper crease / trifold fold gradient) */
+.vintage-letter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 32.2%,
+    rgba(90, 60, 40, 0.035) 32.8%,
+    rgba(0, 0, 0, 0.045) 33.1%,
+    rgba(255, 255, 255, 0.65) 33.6%,
+    transparent 34.3%,
+    transparent 65.2%,
+    rgba(90, 60, 40, 0.035) 65.8%,
+    rgba(0, 0, 0, 0.045) 66.1%,
+    rgba(255, 255, 255, 0.65) 66.6%,
+    transparent 67.3%,
+    transparent 100%
+  );
+  box-shadow: inset 0 0 32px rgba(212, 165, 116, 0.1);
+}
+
+.letter-header,
+.letter-body,
+.letter-footer,
+.interactive-footer {
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes letterAppear {
-  0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(70px) rotate(-1.6deg) scale(0.9);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-6px) rotate(0.4deg) scale(1.008);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
 }
 
 .letter-corner {
