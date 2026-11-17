@@ -1,26 +1,27 @@
 /**
  * ==============================================================================
- * THIỆP ĐIỆN TỬ TÌNH YÊU - CLIENT JAVASCRIPT (PHIÊN BẢN TÍCH HỢP NÂNG CAO)
- * 1. Dùng Google Sheets làm Database trực tiếp (qua link CSV)
- * 2. Hộp thư phản hồi nhanh gửi thẳng về Telegram Bot
- * 3. Hộp Thư Kỷ Niệm (Archive), Khóa ngày tương lai, Typewriter effect
- * 4. Tự động dự phòng an toàn (data.json hoặc nội bộ) nếu chưa cấu hình
+ * THIỆP ĐIỆN TỬ TÌNH YÊU - CLIENT JAVASCRIPT
+ * Tự động đồng bộ nội dung kịch bản thiệp mỗi ngày từ Google Sheets (CSV)
  * ==============================================================================
  */
 
+// 1. HẰNG SỐ CẤU HÌNH LINK CSV GOOGLE SHEETS LẤY NỘI DUNG THIỆP MỖI NGÀY
+// Dán đường link xuất bản Google Sheets dạng CSV vào đây:
+// (Ví dụ: "https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv"
+//  hoặc: "https://docs.google.com/spreadsheets/d/1fzesb7HrcuS7spJ88lpVKb-1PEIWvdPEwNlZm5lt1-8/gviz/tq?tqx=out:csv")
+const CONTENT_SHEET_CSV_URL = "DÁN_LINK_CSV_VÀO_ĐÂY";
+
+// 2. Link Web App Google Apps Script nhận phản hồi lời nhắn gửi về Google Sheet
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6wr8uSgQZFp7JDy8L8IiU9M-QYe4BzIru_PX7guJc9su7S6h-RolQvnng4ckVZ36K/exec";
+
 /* ==============================================================================
    0. CẤU HÌNH TÍCH HỢP THỰC TẾ (GOOGLE APPS SCRIPT & GOOGLE SHEETS)
-   Điền các thông số của bạn vào đây để kích hoạt tính năng!
    ============================================================================== */
 const INTEGRATION_CONFIG = {
-  // 1. Link Web App Google Apps Script nhận tin nhắn gửi về Google Sheet
-  // (Dán URL nhận được sau khi Triển khai / Deploy file Code.gs vào đây)
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbx6wr8uSgQZFp7JDy8L8IiU9M-QYe4BzIru_PX7guJc9su7S6h-RolQvnng4ckVZ36K/exec",
-
-  // 2. Link xuất bản Google Sheets dạng CSV (Để đọc nội dung các bức thư)
-  // URL bảng tính của bạn: https://docs.google.com/spreadsheets/d/1fzesb7HrcuS7spJ88lpVKb-1PEIWvdPEwNlZm5lt1-8/edit
-  GOOGLE_SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/1fzesb7HrcuS7spJ88lpVKb-1PEIWvdPEwNlZm5lt1-8/gviz/tq?tqx=out:csv",
-
+  CONTENT_SHEET_CSV_URL: CONTENT_SHEET_CSV_URL,
+  GOOGLE_SCRIPT_URL: GOOGLE_SCRIPT_URL,
+  // Link Google Sheets dự phòng nếu CONTENT_SHEET_CSV_URL chưa được dán link mới
+  BACKUP_SHEET_CSV_URL: ""
 };
 
 /* ==============================================================================
@@ -121,6 +122,30 @@ const EMBEDDED_DATA = {
           "Ước chúng mình mãi bình yên bên nhau 💖",
           "Ước mọi mệt mỏi đều tan biến ✨",
           "Chỉ cần anh luôn yêu em là đủ 🥰"
+        ]
+      }
+    },
+    {
+      date: "2026-11-18",
+      letterNumber: "Bức thư #02",
+      title: "Sài Gòn Trở Lạnh, Nhớ Mặc Ấm Em Nhé",
+      imageUrl: "assets/anh-ngay-2.jpg",
+      caption: "Giữ ấm bản thân và cười thật tươi hôm nay nhé cô gái của anh 🌸",
+      message: [
+        "Gửi em bé của anh,",
+        "Sáng nay Sài Gòn bỗng nhiên se se lạnh hơn mọi ngày, lúc vừa thức dậy anh liền nghĩ ngay đến em.",
+        "Em nhớ mặc thêm áo khoác ấm khi ra ngoài nhé, đừng chủ quan mà để bị cảm lạnh đấy.",
+        "Chúc em bé có một ngày làm việc thật nhiều năng lượng, mọi việc đều suôn sẻ và thuận lợi.",
+        "Dù bận rộn đến đâu cũng hãy nhớ luôn có một người thương em rất nhiều đang chờ đón em về.",
+        "Làm việc thật vui vẻ em nhé, yêu em nhiều lắm!"
+      ],
+      question: {
+        prompt: "Hôm nay trời lành lạnh, tối nay em muốn cùng anh làm gì?",
+        options: [
+          "Đi ăn một món nóng hổi ấm bụng với anh 🍲",
+          "Cùng anh đi dạo ngắm phố phường se lạnh 🛵",
+          "Uống một ly trà sữa ấm áp 🧋",
+          "Về sớm cuộn chăn ấm xem phim cùng anh 🎬"
         ]
       }
     }
@@ -360,42 +385,77 @@ function normalizeDate(rawDate) {
 }
 
 /**
- * Tải dữ liệu từ Google Sheets CSV
+ * Chuẩn hóa link Google Sheets thành link tải CSV công khai
+ * Hỗ trợ cả link /pub?output=csv, link /edit và link /gviz/tq
+ */
+function formatGoogleSheetCsvUrl(url) {
+  if (!url) return "";
+  url = url.trim();
+
+  // Nếu người dùng dán link chỉnh sửa thông thường (edit link)
+  if (url.includes("docs.google.com/spreadsheets") && url.includes("/edit")) {
+    const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    if (idMatch && idMatch[1]) {
+      const gidMatch = url.match(/[#&?]gid=([0-9]+)/);
+      const gid = gidMatch ? `&gid=${gidMatch[1]}` : "";
+      return `https://docs.google.com/spreadsheets/d/${idMatch[1]}/gviz/tq?tqx=out:csv${gid}`;
+    }
+  }
+
+  return url;
+}
+
+/**
+ * Tải và phân tích dữ liệu kịch bản thiệp từ Google Sheets CSV
+ * Phân tích chuẩn xác các cột: Date, LetterNumber, Title, ImageURL, Message
  */
 async function fetchGoogleSheetsLetters(csvUrl) {
   try {
-    const res = await fetch(csvUrl, { cache: "no-store" });
+    const formattedUrl = formatGoogleSheetCsvUrl(csvUrl);
+    const res = await fetch(formattedUrl, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const csvText = await res.text();
     const rows = parseCSV(csvText);
 
     if (rows.length < 2) return null;
 
-    // Hàng đầu tiên là tiêu đề cột
-    const headers = rows[0].map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ""));
-    const dateIdx = headers.findIndex(h => h.includes("date") || h.includes("ngay"));
-    const titleIdx = headers.findIndex(h => h.includes("title") || h.includes("tieude"));
-    const imgIdx = headers.findIndex(h => h.includes("image") || h.includes("img") || h.includes("anh"));
-    const msgIdx = headers.findIndex(h => h.includes("message") || h.includes("noidung") || h.includes("thu"));
-    const captionIdx = headers.findIndex(h => h.includes("caption") || h.includes("chuthich"));
-    const numberIdx = headers.findIndex(h => h.includes("number") || h.includes("sothu"));
-    const questionIdx = headers.findIndex(h => h.includes("question") || h.includes("cauhoi"));
+    // Phân tích tiêu đề các cột (Dòng 1 trong file Sheet)
+    const rawHeaders = rows[0];
+    const cleanHeaders = rawHeaders.map(h => 
+      h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "")
+    );
+
+    const dateIdx = cleanHeaders.findIndex(h => h.includes("date") || h.includes("ngay"));
+    const numberIdx = cleanHeaders.findIndex(h => h.includes("letternumber") || h.includes("sothu") || h.includes("stt") || h.includes("number"));
+    const titleIdx = cleanHeaders.findIndex(h => h.includes("title") || h.includes("tieude") || h.includes("chude"));
+    const imgIdx = cleanHeaders.findIndex(h => h.includes("imageurl") || h.includes("image") || h.includes("img") || h.includes("anh") || h.includes("photo"));
+    const msgIdx = cleanHeaders.findIndex(h => h.includes("message") || h.includes("noidung") || h.includes("thu") || h.includes("loinhan"));
+    const captionIdx = cleanHeaders.findIndex(h => h.includes("caption") || h.includes("chuthich"));
+    const questionIdx = cleanHeaders.findIndex(h => h.includes("question") || h.includes("cauhoi"));
+
+    // Xác định chỉ số cột (nếu tiêu đề cột không khớp từ khóa thì dùng thứ tự cột mặc định)
+    if (dateIdx === -1) return null;
+    const finalDateIdx = dateIdx;
+    const finalNumberIdx = numberIdx !== -1 ? numberIdx : (rows[0].length > 1 ? 1 : -1);
+    const finalTitleIdx = titleIdx !== -1 ? titleIdx : (rows[0].length > 2 ? 2 : -1);
+    const finalImgIdx = imgIdx !== -1 ? imgIdx : (rows[0].length > 3 ? 3 : -1);
+    const finalMsgIdx = msgIdx !== -1 ? msgIdx : (rows[0].length > 4 ? 4 : -1);
 
     const letters = [];
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
-      const rawDate = dateIdx !== -1 ? row[dateIdx] : "";
+      const rawDate = finalDateIdx !== -1 ? row[finalDateIdx] : "";
       const date = normalizeDate(rawDate);
-      if (!date) continue;
+      if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
 
-      const title = titleIdx !== -1 && row[titleIdx] ? row[titleIdx] : "Thư Tình Gửi Em";
-      const imageUrl = imgIdx !== -1 && row[imgIdx] ? row[imgIdx] : "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80";
-      const rawMessage = msgIdx !== -1 && row[msgIdx] ? row[msgIdx] : "Thương gửi em yêu...";
-      
+      const letterNumber = finalNumberIdx !== -1 && row[finalNumberIdx] ? row[finalNumberIdx] : `Bức thư #${i}`;
+      const title = finalTitleIdx !== -1 && row[finalTitleIdx] ? row[finalTitleIdx] : "Thư Tình Gửi Em";
+      const imageUrl = finalImgIdx !== -1 && row[finalImgIdx] ? row[finalImgIdx] : "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80";
+      const rawMessage = finalMsgIdx !== -1 && row[finalMsgIdx] ? row[finalMsgIdx] : "Thương gửi em yêu...";
+
       // Tách các đoạn văn theo dấu xuống dòng
-      const message = rawMessage.split(/\r?\n|\n\n/).map(p => p.trim()).filter(p => p.length > 0);
+      const message = rawMessage.split(/\r?\n/).map(p => p.trim()).filter(p => p.length > 0);
       const caption = captionIdx !== -1 && row[captionIdx] ? row[captionIdx] : "Mỗi khoảnh khắc đều có em ✨";
-      const letterNumber = numberIdx !== -1 && row[numberIdx] ? row[numberIdx] : `Bức thư #${i}`;
 
       let question = null;
       if (questionIdx !== -1 && row[questionIdx]) {
@@ -418,15 +478,15 @@ async function fetchGoogleSheetsLetters(csvUrl) {
 
     return letters.length > 0 ? letters : null;
   } catch (err) {
-    console.error("Lỗi khi tải từ Google Sheets:", err);
+    console.error("Lỗi khi tải từ Google Sheets CSV:", err);
     return null;
   }
 }
 
 /**
  * Tải toàn bộ dữ liệu ứng dụng:
- * 1. Nạp data.json
- * 2. Nếu có GOOGLE_SHEET_CSV_URL, nạp tiếp từ Google Sheets và ghi đè danh sách thư
+ * 1. Nạp data.json làm nền tảng dự phòng
+ * 2. Tự động fetch dữ liệu kịch bản từ link Google Sheets CSV (CONTENT_SHEET_CSV_URL)
  */
 async function loadData() {
   // Bước 1: Nạp file data.json làm nền tảng
@@ -447,42 +507,65 @@ async function loadData() {
     appData = EMBEDDED_DATA;
   }
 
-  // Bước 2: Kiểm tra cấu hình Google Sheets
-  if (INTEGRATION_CONFIG.GOOGLE_SHEET_CSV_URL && INTEGRATION_CONFIG.GOOGLE_SHEET_CSV_URL.trim() !== "") {
-    console.log("📊 Đang đồng bộ thư từ Google Sheets...");
-    const sheetLetters = await fetchGoogleSheetsLetters(INTEGRATION_CONFIG.GOOGLE_SHEET_CSV_URL);
-    if (sheetLetters) {
+  // Bước 2: Tự động lấy nội dung kịch bản thiệp mỗi ngày từ Google Sheets CSV
+  // Ưu tiên: CONTENT_SHEET_CSV_URL -> BACKUP_SHEET_CSV_URL
+  let csvUrlToFetch = null;
+  if (typeof CONTENT_SHEET_CSV_URL === "string" && CONTENT_SHEET_CSV_URL.trim() !== "" && CONTENT_SHEET_CSV_URL !== "DÁN_LINK_CSV_VÀO_ĐÂY") {
+    csvUrlToFetch = CONTENT_SHEET_CSV_URL.trim();
+  } else if (INTEGRATION_CONFIG.BACKUP_SHEET_CSV_URL) {
+    csvUrlToFetch = INTEGRATION_CONFIG.BACKUP_SHEET_CSV_URL;
+  }
+
+  if (csvUrlToFetch) {
+    console.log("📊 Đang đồng bộ kịch bản thiệp từ Google Sheets CSV...");
+    const sheetLetters = await fetchGoogleSheetsLetters(csvUrlToFetch);
+    if (sheetLetters && sheetLetters.length > 0) {
       appData.letters = sheetLetters;
       console.log(`🎉 Đã nạp thành công ${sheetLetters.length} bức thư từ Google Sheets!`);
       showToast("Đã cập nhật thư mới từ Google Sheets! 📊✨", "💌");
     } else {
-      console.warn("⚠️ Không thể đọc Google Sheets, sử dụng dữ liệu mặc định");
+      console.warn("⚠️ Chưa thể kết nối Google Sheets hoặc bảng trống, sử dụng dữ liệu dự phòng");
     }
   }
 }
 
 /**
- * Chọn bức thư của ngày hôm nay
+ * Chọn bức thư của ngày hôm nay:
+ * 1. Tự động đối chiếu với ngày hiện tại của hệ thống (YYYY-MM-DD)
+ * 2. Nếu ngày hôm nay chưa có dòng dữ liệu mới trên Sheet, hiển thị lời nhắn mặc định dễ thương
  */
 function selectLetterForToday() {
   const letters = appData.letters || [];
   
-  // Tìm bức thư khớp ngày hôm nay
+  // 1. Tự động đối chiếu với ngày hiện tại của hệ thống (YYYY-MM-DD)
   let match = letters.find(l => l.date === todayDateString);
 
   if (match) {
     activeLetter = match;
   } else {
-    // Nếu hôm nay chưa có dữ liệu mới, kiểm tra ngày mẫu 2026-11-14 hoặc dùng fallback
-    const sampleToday = letters.find(l => l.date === "2026-11-14");
-    if (sampleToday && todayDateString.startsWith("2026-11")) {
-      activeLetter = sampleToday;
-    } else {
-      activeLetter = {
-        ...appData.fallbackLetter,
-        date: todayDateString
-      };
-    }
+    // 2. Nếu ngày hôm nay chưa có dòng dữ liệu mới trên Sheet, hiển thị lời nhắn mặc định dễ thương
+    activeLetter = {
+      date: todayDateString,
+      letterNumber: "Bức thư tình hôm nay",
+      title: "Hôm nay anh đang chuẩn bị một điều bất ngờ cho em...",
+      imageUrl: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
+      caption: "Mỗi ngày trôi qua đều là một ngày yêu em 💖",
+      message: [
+        "Gửi em bé đáng yêu của anh,",
+        "Hôm nay anh đang chuẩn bị một điều bất ngờ nho nhỏ dành riêng cho em...",
+        "Dù trang nhật ký hôm nay chưa kịp cập nhật câu chuyện mới, nhưng tình cảm và nỗi nhớ anh dành cho em thì chưa từng vơi bớt một giây phút nào.",
+        "Em nhớ ăn uống đầy đủ, uống nhiều nước ấm và giữ nụ cười thật tươi nhé. Chờ anh một chút nhé, điều ngọt ngào sắp đến rồi! 💕"
+      ],
+      question: {
+        prompt: "Em có tò mò bất ngờ hôm nay của anh là gì không nè?",
+        options: [
+          "Tò mò lắm luôn á! 🥰",
+          "Đang háo hức chờ nè 💖",
+          "Chỉ cần là anh thì gì em cũng thích ✨",
+          "Bật mí trước xíu đi mà 🥺"
+        ]
+      }
+    };
   }
 
   renderCurrentLetter();
@@ -997,8 +1080,10 @@ function renderArchiveCards() {
   DOM.archiveCardsList.innerHTML = "";
 
   const sortedLetters = [...letters].sort((a, b) => b.date.localeCompare(a.date));
+  const hasToday = sortedLetters.some(l => l.date === todayDateString);
+  const displayLetters = (!hasToday && activeLetter) ? [activeLetter, ...sortedLetters] : sortedLetters;
 
-  sortedLetters.forEach(letter => {
+  displayLetters.forEach(letter => {
     const isFuture = letter.date > todayDateString;
     const isCurrentReading = activeLetter && activeLetter.date === letter.date;
     const isToday = letter.date === todayDateString;

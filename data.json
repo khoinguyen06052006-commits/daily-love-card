@@ -94,6 +94,30 @@
           "Chỉ cần anh luôn yêu em là đủ 🥰"
         ]
       }
+    },
+    {
+      "date": "2026-11-18",
+      "letterNumber": "Bức thư #02",
+      "title": "Sài Gòn Trở Lạnh, Nhớ Mặc Ấm Em Nhé",
+      "imageUrl": "assets/anh-ngay-2.jpg",
+      "caption": "Giữ ấm bản thân và cười thật tươi hôm nay nhé cô gái của anh 🌸",
+      "message": [
+        "Gửi em bé của anh,",
+        "Sáng nay Sài Gòn bỗng nhiên se se lạnh hơn mọi ngày, lúc vừa thức dậy anh liền nghĩ ngay đến em.",
+        "Em nhớ mặc thêm áo khoác ấm khi ra ngoài nhé, đừng chủ quan mà để bị cảm lạnh đấy.",
+        "Chúc em bé có một ngày làm việc thật nhiều năng lượng, mọi việc đều suôn sẻ và thuận lợi.",
+        "Dù bận rộn đến đâu cũng hãy nhớ luôn có một người thương em rất nhiều đang chờ đón em về.",
+        "Làm việc thật vui vẻ em nhé, yêu em nhiều lắm!"
+      ],
+      "question": {
+        "prompt": "Hôm nay trời lành lạnh, tối nay em muốn cùng anh làm gì?",
+        "options": [
+          "Đi ăn một món nóng hổi ấm bụng với anh 🍲",
+          "Cùng anh đi dạo ngắm phố phường se lạnh 🛵",
+          "Uống một ly trà sữa ấm áp 🧋",
+          "Về sớm cuộn chăn ấm xem phim cùng anh 🎬"
+        ]
+      }
     }
   ],
   "fallbackLetter": {

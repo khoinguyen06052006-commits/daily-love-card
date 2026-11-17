@@ -6,7 +6,7 @@
  * ==============================================================================
  */
 
-const CACHE_NAME = "love-card-cache-v5";
+const CACHE_NAME = "love-card-cache-v6";
 
 // Danh sách các tài nguyên tĩnh cần cache ngay khi cài đặt
 const STATIC_ASSETS = [
