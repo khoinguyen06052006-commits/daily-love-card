@@ -97,9 +97,9 @@
     },
     {
       "date": "2026-11-18",
-      "letterNumber": "Bức thư #02",
+      "letterNumber": "Bức thư tình #05",
       "title": "Sài Gòn Trở Lạnh, Nhớ Mặc Ấm Em Nhé",
-      "imageUrl": "assets/anh-ngay-2.jpg",
+      "imageUrl": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
       "caption": "Giữ ấm bản thân và cười thật tươi hôm nay nhé cô gái của anh 🌸",
       "message": [
         "Gửi em bé của anh,",
@@ -116,6 +116,145 @@
           "Cùng anh đi dạo ngắm phố phường se lạnh 🛵",
           "Uống một ly trà sữa ấm áp 🧋",
           "Về sớm cuộn chăn ấm xem phim cùng anh 🎬"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-19",
+      "letterNumber": "Bức thư tình #06",
+      "title": "Một Ngày Bình Yên Và Luôn Có Anh Bên Cạnh",
+      "imageUrl": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
+      "caption": "Chỉ cần có em, ngày bình thường cũng hóa dịu dàng ✨",
+      "message": [
+        "Gửi em bé thương yêu của anh,",
+        "Một ngày nữa lại trôi qua và anh lại có thêm một ngày được nhớ về em nhiều hơn hôm qua.",
+        "Hôm nay của em thế nào rồi? Có điều gì làm em thấy vui hay có khoảnh khắc nào làm em thấy mỏi mệt một chút không?",
+        "Anh chỉ mong mỗi khi em cảm thấy áp lực hay mệt nhoài ngoài kia, em sẽ nhớ rằng luôn có một vòng tay ấm áp của anh đang chờ để ôm em thật chặt.",
+        "Tối nay em nhớ ăn uống đầy đủ, tắm nước ấm và nghỉ ngơi sớm nhé. Đừng quên là có một người thương em rất rất nhiều đấy!",
+        "Chúc em bé của anh ngủ thật ngon và có những giấc mơ ngọt ngào nha ❤️"
+      ],
+      "question": {
+        "prompt": "Hôm nay điều gì làm em bé thấy vui vẻ nhất nè?",
+        "options": [
+          "Nhận được bức thư tình này của anh 🥰",
+          "Công việc hôm nay trôi qua êm đẹp ✨",
+          "Được nghe giọng nói của anh 📞",
+          "Nghĩ đến lúc được gặp anh cuối tuần 💕"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "letterNumber": "Bức thư tình #07",
+      "title": "Thứ Sáu Rồi, Em Đã Vất Vả Suốt Tuần Qua Rồi 🌸",
+      "imageUrl": "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
+      "caption": "Cuối tuần chạm ngõ, hãy để anh sưởi ấm cho em nhé 💕",
+      "message": [
+        "Gửi em bé thương yêu của anh,",
+        "Cuối cùng thì ngày thứ Sáu cũng đã đến rồi! Một tuần làm việc chăm chỉ của em chuẩn bị khép lại rồi đấy.",
+        "Anh biết trong tuần có những lúc em mệt mỏi và áp lực, nhưng em đã làm rất tốt rồi, cô gái nhỏ của anh giỏi lắm.",
+        "Tối nay xong việc em hãy thở phào một cái thật nhẹ nhõm nhé. Mọi âu lo cứ để lại phía sau, cuối tuần này anh sẽ bù đắp và chăm sóc em thật chu đáo.",
+        "Yêu em nhiều lắm, tan làm anh đón em bé nhé!"
+      ],
+      "question": {
+        "prompt": "Tối thứ Sáu thảnh thơi, em muốn chúng mình làm gì đầu tiên?",
+        "options": [
+          "Đi ăn một bữa thật ngon xả stress 🍲",
+          "Lên xe để anh chở đi hóng gió phố đêm 🛵",
+          "Về nhà nằm nghỉ ngơi và nghe anh thủ thỉ 🛏️",
+          "Đi dạo mua sắm hoặc uống trà sữa 🧋"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-21",
+      "letterNumber": "Bức thư tình #08",
+      "title": "Thứ Bảy Bình Yên: Được Ngắm Em Cười Cả Ngày",
+      "imageUrl": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80",
+      "caption": "Chỉ cần được ở bên em, khoảnh khắc nào cũng hóa ngọt ngào ✨",
+      "message": [
+        "Chào buổi sáng cô công chúa của anh,",
+        "Thứ Bảy không có chuông báo thức giục giã, mong em bé của anh có một giấc ngủ thật đã và thức dậy với nụ cười rạng rỡ.",
+        "Những ngày bận rộn trôi qua, thứ anh mong mỏi nhất chính là những phút giây thảnh thơi được ngồi cạnh em, nắm tay em và ngắm nhìn em cười.",
+        "Em chẳng cần phải vội vã làm bất cứ điều gì hôm nay đâu. Hôm nay hãy cứ tận hưởng sự nuông chiều của anh và làm những điều em yêu thích nhé.",
+        "Hạnh phúc của anh đơn giản chỉ là được nhìn thấy em vui vẻ mỗi ngày!"
+      ],
+      "question": {
+        "prompt": "Hôm nay em muốn được anh cưng chiều như thế nào nè?",
+        "options": [
+          "Mua cho em món đồ ăn/nước uống em thích 🍰",
+          "Được anh ôm thật chặt không buông 🥺",
+          "Cùng anh chụp thật nhiều ảnh xinh 📸",
+          "Ở bên anh cả ngày là em vui rồi 🥰"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-22",
+      "letterNumber": "Bức thư tình #09",
+      "title": "Chủ Nhật Êm Đềm: Nạp Đầy Yêu Thương Cho Em",
+      "imageUrl": "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80",
+      "caption": "Bình yên nhất là khi biết luôn có một người thương mình vô điều kiện 🌿",
+      "message": [
+        "Gửi em, điều ngọt ngào nhất của anh,",
+        "Chủ Nhật trôi qua êm ả như một bản nhạc dịu dàng. Nhìn lại những khoảnh khắc cuối tuần bên em, lòng anh lúc nào cũng thấy ấm áp vô cùng.",
+        "Ngày mai là bắt đầu một tuần mới rồi, có thể sẽ lại có những guồng quay công việc bận rộn đón chờ. Nhưng em đừng lo lắng gì cả nhé, vì lúc nào anh cũng là hậu phương vững chắc nhất của em.",
+        "Tối nay em nhớ ngâm chân nước ấm, dưỡng da xinh đẹp và đi ngủ thật sớm nhé.",
+        "Anh sẽ luôn ở đây, yêu thương và bảo bọc em bé của anh mỗi ngày. Chúc em ngủ thật ngon!"
+      ],
+      "question": {
+        "prompt": "Trước khi khép lại cuối tuần, em có điều gì muốn nhắn nhủ với anh không?",
+        "options": [
+          "Cuối tuần bên anh vui và ấm áp lắm 💕",
+          "Tuần mới anh cũng phải giữ sức khỏe nhé 🧣",
+          "Mong tuần sau lại được gặp anh sớm ✨",
+          "Yêu anh nhiều hơn hôm qua một chút nữa 🥰"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-23",
+      "letterNumber": "Bức thư tình #10",
+      "title": "Hôm Nay: Tuần Mới Rạng Rỡ & Tràn Ngập Nụ Cười Nhé Em",
+      "imageUrl": "https://images.unsplash.com/photo-1513279922550-250c2129b13a?auto=format&fit=crop&w=800&q=80",
+      "caption": "Mỗi sớm mai thức dậy, người đầu tiên anh nghĩ đến luôn là em ☀️",
+      "message": [
+        "Gửi em bé nhỏ của anh,",
+        "Một tuần mới lại bắt đầu rồi nè! Sáng nay em thức dậy có thấy sảng khoái và tràn đầy năng lượng không?",
+        "Anh gửi vào bức thư này một cái ôm thật ấm và ngàn nụ hôn ngọt ngào để tiếp thêm động lực cho em bắt đầu ngày đầu tuần thật suôn sẻ nhé.",
+        "Dù công việc có bận đến đâu, em cũng nhớ uống nhiều nước, ăn trưa đúng giờ và đừng để mình bị căng thẳng quá nha.",
+        "Bất cứ khi nào mệt mỏi, hãy mở thư anh ra đọc để biết rằng anh đang nhớ em nhiều thế nào. Chúc cô bé của anh một ngày đầu tuần thật rực rỡ và may mắn!"
+      ],
+      "question": {
+        "prompt": "Hôm nay em muốn nhận 'liều thuốc tinh thần' nào từ anh nhất?",
+        "options": [
+          "Một tin nhắn chúc ngày mới siêu ngọt ngào 💌",
+          "Một cốc trà sữa được ship tận nơi 🧋",
+          "Một cái ôm siết chặt thật ấm áp 🤗",
+          "Chỉ cần anh luôn yêu thương và cưng chiều em 💕"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-24",
+      "letterNumber": "Bức thư tình #11",
+      "title": "Đêm Muộn Bình Yên: Ngủ Thật Ngon Nha Em Bé Của Anh 🌙",
+      "imageUrl": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
+      "caption": "Dù ngày dài có mệt mỏi đến đâu, đêm về vẫn luôn có anh yêu em ✨",
+      "message": [
+        "Gửi em bé thương yêu của anh,",
+        "Một ngày thứ Ba bận rộn nữa lại vừa trôi qua rồi. Lúc anh viết những dòng này cho em thì trời cũng đã về khuya, không biết em bé đã chuẩn bị đi ngủ chưa nhỉ?",
+        "Anh biết hôm nay em cũng đã nỗ lực và cố gắng rất nhiều rồi. Hãy gác lại hết những âu lo, mỏi mệt ngoài kia nhé, vì em đã làm rất tuyệt vời.",
+        "Đêm nay trời có chút se se lạnh, em nhớ kéo chăn đắp thật ấm và đừng nằm nghiêng một tư thế lâu nha.",
+        "Ngủ một giấc thật sâu, mơ về những điều hạnh phúc và ngọt ngào nhất em nhé. Trong giấc mơ của anh lúc nào cũng có nụ cười của em đấy. Yêu và nhớ em rất nhiều! ❤️"
+      ],
+      "question": {
+        "prompt": "Trước khi chìm vào giấc ngủ, em bé muốn anh làm điều gì nè?",
+        "options": [
+          "Thì thầm chúc em ngủ ngon bên tai 🎧",
+          "Kể cho em nghe một câu chuyện cổ tích 📖",
+          "Ôm em thật chặt và vỗ về em ngủ 🧸",
+          "Hôn lên trán em một cái thật dịu dàng 💋"
         ]
       }
     }
